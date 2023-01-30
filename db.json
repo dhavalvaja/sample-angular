@@ -23,16 +23,42 @@
       "name": "darkrai",
       "speciality": "dark",
       "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/491.png"
-    }
-  ],
-  "comments": [
+    },
     {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "name": "bulbasaur",
+      "speciality": "grass",
+      "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png",
+      "id": 5
+    },
+    {
+      "name": "charizard",
+      "speciality": "fire",
+      "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/006.png",
+      "id": 6
+    },
+    {
+      "name": "metapod",
+      "speciality": "bug",
+      "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/011.png",
+      "id": 7
+    },
+    {
+      "name": "caterpie",
+      "speciality": "bug",
+      "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/010.png",
+      "id": 8
+    },
+    {
+      "name": "butterfree",
+      "speciality": "flying",
+      "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/012.png",
+      "id": 9
+    },
+    {
+      "name": "magmorter",
+      "speciality": "fire",
+      "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/467.png",
+      "id": 10
     }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  ]
 }

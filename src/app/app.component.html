@@ -5,27 +5,26 @@
     Add Pokemon
   </button>
 
-  <div *ngIf="pokemonToDisplay.length === 0 else pokemonTable">No Pokemon</div>
+  <div *ngIf="isSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+    Pokemon Added
+    <button type="button" (click)="toggle()" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    Something went Wrong!!
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div> -->
+
+  <div *ngIf="allPokemons.length === 0 else pokemonTable">No Pokemon</div>
 
   <ng-template #pokemonTable>
-    <table class="table table-striped table-hover table-bordered">
-      <thead>
-        <tr [ngStyle]="{color:'purple', background:'white'}">
-          <th scope="col">#</th>
-          <th scope="col">Name</th>
-          <th scope="col">Speciality</th>
-          <th scope="col">Image</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let pokemon of pokemonToDisplay; index as i">
-          <td>{{i+1}}</td>
-          <td>{{pokemon.name}}</td>
-          <td>{{pokemon.speciality}}</td>
-          <td><img src={{pokemon.imgUrl}} alt=""></td>
-        </tr>
-      </tbody>
-    </table>
+
+    <div class="d-flex flex-row flex-wrap">
+      <div *ngFor="let pokemon of allPokemons; index as i">
+        <app-pokemon-details [pokemon]='allPokemons[i]'></app-pokemon-details>
+      </div>
+    </div>
+
   </ng-template>
 
 </div>
@@ -38,26 +37,27 @@
         <h5 class="modal-title" id="exampleModalLabel">Add Pokemon</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        <form [formGroup]="pokemonForm">
+      <form [formGroup]="pokemonForm">
+        <div class="modal-body">
           <div class="mb-3">
             <label for="PokemonName" class="form-label">Pokemon Name</label>
-            <input type="text" class="form-control" id="PokemonName" formControlName="name">
+            <input type="text" class="form-control" id="PokemonName" formControlName="name" required>
           </div>
           <div class="mb-3">
             <label for="PokemonAbilities" class="form-label">Speciality</label>
-            <input type="text" class="form-control" id="PokemonAbilities" formControlName="speciality">
+            <input type="text" class="form-control" id="PokemonAbilities" formControlName="speciality" required>
           </div>
           <div class="mb-3">
             <label class="form-label" for="ImgUrl">Pokemon Image URL</label>
-            <input type="text" class="form-control" id="ImgUrl" formControlName="imgUrl">
+            <input type="text" class="form-control" id="ImgUrl" formControlName="imgUrl" required>
           </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" (click)="savePokemon()" data-bs-dismiss="modal" class="btn btn-primary">Save
+            changes</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
