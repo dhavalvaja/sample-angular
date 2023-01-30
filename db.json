@@ -1,0 +1,38 @@
+{
+  "pokemon": [
+    {
+      "id": 1,
+      "name": "pikachu",
+      "speciality": "electric",
+      "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/025.png"
+    },
+    {
+      "id": 2,
+      "name": "zacian",
+      "speciality": "fairy",
+      "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/888.png"
+    },
+    {
+      "id": 3,
+      "name": "capsak",
+      "speciality": "grass",
+      "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/951.png"
+    },
+    {
+      "id": 4,
+      "name": "darkrai",
+      "speciality": "dark",
+      "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/491.png"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

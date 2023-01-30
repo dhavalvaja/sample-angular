@@ -1,38 +1,62 @@
 <app-header></app-header>
 <div class="container">
   <!-- Button trigger modal -->
-  <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
     Add Pokemon
   </button>
 
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Add Pokemon</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="pokemonForm">
-            <div class="mb-3">
-              <label for="PokemonName" class="form-label">Pokemon Name</label>
-              <input type="text" class="form-control" id="PokemonName" formControlName="name">
-            </div>
-            <div class="mb-3">
-              <label for="PokemonAbilities" class="form-label">Speciality</label>
-              <input type="text" class="form-control" id="PokemonAbilities" formControlName="speciality">
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="ImgUrl">Pokemon Image URL</label>
-              <input type="text" class="form-control" id="ImgUrl" formControlName="imgUrl">
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+  <div *ngIf="pokemonToDisplay.length === 0 else pokemonTable">No Pokemon</div>
+
+  <ng-template #pokemonTable>
+    <table class="table table-striped table-hover table-bordered">
+      <thead>
+        <tr [ngStyle]="{color:'purple', background:'white'}">
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">Speciality</th>
+          <th scope="col">Image</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let pokemon of pokemonToDisplay; index as i">
+          <td>{{i+1}}</td>
+          <td>{{pokemon.name}}</td>
+          <td>{{pokemon.speciality}}</td>
+          <td><img src={{pokemon.imgUrl}} alt=""></td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-template>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Pokemon</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="pokemonForm">
+          <div class="mb-3">
+            <label for="PokemonName" class="form-label">Pokemon Name</label>
+            <input type="text" class="form-control" id="PokemonName" formControlName="name">
+          </div>
+          <div class="mb-3">
+            <label for="PokemonAbilities" class="form-label">Speciality</label>
+            <input type="text" class="form-control" id="PokemonAbilities" formControlName="speciality">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="ImgUrl">Pokemon Image URL</label>
+            <input type="text" class="form-control" id="ImgUrl" formControlName="imgUrl">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
