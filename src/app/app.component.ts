@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Notification } from './model/notification.model';
 import { PokemonModel } from './model/pokemon.model';
 import { PokemonService } from './services/pokemon.service';
 
@@ -10,48 +11,66 @@ import { PokemonService } from './services/pokemon.service';
 })
 
 export class AppComponent implements OnInit {
-  title = 'sample-angular';
-  pokemonForm: FormGroup;
+  addPokemonForm: FormGroup;
   allPokemons: PokemonModel[];
   pokemonToDisplay: PokemonModel[];
-  isSuccess: boolean
+  isNotificationOn: boolean = false;
+  notification: Notification | null
 
   constructor(private fb: FormBuilder, private pokemonService: PokemonService) {
-    this.pokemonForm = fb.group({})
+    this.addPokemonForm = fb.group({})
     this.allPokemons = [];
     this.pokemonToDisplay = [];
-    this.isSuccess = false
+    this.notification = null
   }
 
   ngOnInit(): void {
-    this.pokemonForm = this.fb.group({
-      name: this.fb.control(''),
-      speciality: this.fb.control(''),
-      imgUrl: this.fb.control(''),
+    this.addPokemonForm = this.fb.group({
+      name: new FormControl('', [Validators.required]),
+      speciality: this.fb.control('', [Validators.required]),
+      imgUrl: this.fb.control('', [Validators.required]),
     })
-    this.pokemonService.getPokemons().subscribe(response => this.allPokemons = response)
+
+    const handleFetchAllNotification = (fetchedPokemons: PokemonModel[]) => {
+      this.allPokemons = fetchedPokemons;
+    }
+
+    this.pokemonService.getPokemons().subscribe({
+      next: handleFetchAllNotification.bind(this),
+      error: (error) => {
+        this.showNotification(new Notification('error', error.message))
+      }
+    });
   }
 
   public get Name(): FormControl {
-    return this.pokemonForm.get('name') as FormControl
+    return this.addPokemonForm.get('name') as FormControl
   }
-
   public get Image(): FormControl {
-    return this.pokemonForm.get('imgUrl') as FormControl
+    return this.addPokemonForm.get('imgUrl') as FormControl
   }
   public get Speciality(): FormControl {
-    return this.pokemonForm.get('speciality') as FormControl
+    return this.addPokemonForm.get('speciality') as FormControl
   }
 
   clearForm() {
-    this.Name.setValue('');
-    this.Image.setValue('');
-    this.Speciality.setValue('');
+    this.addPokemonForm.reset();
   }
 
-  toggle() {
-    this.isSuccess = false
+  showNotification(notification: Notification) {
+    this.isNotificationOn = true;
+    this.notification = notification;
+    setTimeout(() => {
+      this.hideNotification()
+    }, 3000);
   }
+
+  hideNotification() {
+    this.isNotificationOn = false;
+    this.notification = null;
+  }
+
+
 
   savePokemon() {
     let pokemon: PokemonModel = {
@@ -59,12 +78,20 @@ export class AppComponent implements OnInit {
       speciality: this.Speciality.value,
       imgUrl: this.Image.value,
     }
-    console.log(pokemon);
+    const handleNextResponse = (savedPokemon: PokemonModel) => {
+      this.allPokemons = this.allPokemons.concat([savedPokemon]);
+      this.showNotification(new Notification('success', `Pokemon ${savedPokemon.name} added successfully!`))
+      this.clearForm();
+    }
 
-    this.pokemonService.savePokemon(pokemon).subscribe(responce => {
-      this.allPokemons.unshift(responce)
-      this.isSuccess = true
-      this.clearForm()
+    const handleErrorResponse = (error: any) => {
+      this.showNotification(new Notification('error', error.message))
+      this.clearForm();
+    }
+
+    this.pokemonService.savePokemon(pokemon).subscribe({
+      next: handleNextResponse.bind(this),
+      error: handleErrorResponse.bind(this)
     })
   }
 }
