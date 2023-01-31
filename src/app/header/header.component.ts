@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { PokemonModel } from '../model/pokemon.model';
 
 @Component({
   selector: 'app-header',

@@ -8,11 +8,13 @@ import { PokemonModel } from '../model/pokemon.model';
 })
 export class PokemonDetailsComponent {
   @Input() pokemon: PokemonModel
+  @Input() searchText: string
   constructor() {
     this.pokemon = {
       name: '',
       imgUrl: '',
       speciality: ''
     }
+    this.searchText = ''
   }
 }

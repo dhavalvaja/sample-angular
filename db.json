@@ -59,6 +59,12 @@
       "speciality": "fire",
       "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/467.png",
       "id": 10
+    },
+    {
+      "name": "paras",
+      "speciality": "Dry Skin",
+      "imgUrl": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/046.png",
+      "id": 11
     }
   ]
 }

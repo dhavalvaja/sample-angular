@@ -61,12 +61,16 @@
 
   <ng-template #pokemonTable>
 
-    <div class="d-flex flex-row flex-wrap">
-      <div *ngFor="let pokemon of pokemonToDisplay; index as i">
-        <app-pokemon-details [pokemon]='pokemonToDisplay[i]'></app-pokemon-details>
+    <input class="form-control" type="text" name="search" [(ngModel)]="searchText" autocomplete="off"
+      (keyup)="filterPokemon($event)">
 
+
+    <div class="d-flex flex-row flex-wrap">
+      <div *ngFor="let pokemon of pokemonToDisplay ; index as i">
+        <app-pokemon-details [pokemon]='pokemonToDisplay[i]' [searchText]='searchText'></app-pokemon-details>
       </div>
     </div>
+
     <div class="d-flex justify-content-between p-2">
       <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
         (pageChange)="refreshPokemons()">

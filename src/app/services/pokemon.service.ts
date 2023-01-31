@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { PokemonModel } from '../model/pokemon.model';
 
@@ -8,7 +8,14 @@ import { PokemonModel } from '../model/pokemon.model';
 
 export class PokemonService {
   baseUrl = 'http://localhost:3000/pokemon'
+
+  public pokemons: PokemonModel[] = [];
+
   constructor(private http: HttpClient) {
+  }
+
+  public setPokemons(pokemons: PokemonModel[]) {
+    this.pokemons = pokemons
   }
 
   getPokemons() {

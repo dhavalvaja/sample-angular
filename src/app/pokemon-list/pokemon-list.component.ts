@@ -11,13 +11,14 @@ import { PokemonService } from '../services/pokemon.service';
   styleUrls: ['./pokemon-list.component.css'],
   providers: [NgbModalConfig, NgbModal],
 })
+
 export class PokemonListComponent implements OnInit {
+  searchText = '';
   addPokemonForm: FormGroup;
   allPokemons: PokemonModel[];
   pokemonToDisplay: PokemonModel[];
   isNotificationOn: boolean = false;
   notification: Notification | null
-
   page = 1;
   pageSize = 4;
   collectionSize = 0;
@@ -31,9 +32,9 @@ export class PokemonListComponent implements OnInit {
     config.keyboard = false
   }
 
-  open(content:any) {
-		this.modalService.open(content);
-	}
+  open(content: any) {
+    this.modalService.open(content);
+  }
 
   ngOnInit(): void {
     this.addPokemonForm = this.fb.group({
@@ -43,6 +44,7 @@ export class PokemonListComponent implements OnInit {
     })
 
     const handleFetchAllPokemons = (fetchedPokemons: PokemonModel[]) => {
+      this.pokemonToDisplay = fetchedPokemons
       this.allPokemons = fetchedPokemons;
       this.collectionSize = this.allPokemons.length
       this.refreshPokemons()
@@ -61,6 +63,20 @@ export class PokemonListComponent implements OnInit {
       .map((pokemon, i) => ({ id: i + 1, ...pokemon }))
       .slice((this.page - 1) * this.pageSize,
         (this.page - 1) * this.pageSize + this.pageSize);
+  }
+
+
+  filterPokemon(event: any) {
+    this.searchText = event.target.value.toLowerCase()
+    this.pokemonToDisplay = this.allPokemons.filter(pokemon => {
+      return this.filterByPokemonDetails(pokemon)
+    })
+  }
+
+  private filterByPokemonDetails(pokemon: PokemonModel): unknown {
+    return pokemon.name.toLowerCase().includes(this.searchText)
+      || pokemon.speciality.toLowerCase().includes(this.searchText)
+      || pokemon.id?.toString() === this.searchText;
   }
 
   public get Name(): FormControl {
@@ -96,6 +112,7 @@ export class PokemonListComponent implements OnInit {
       speciality: this.Speciality.value,
       imgUrl: this.Image.value,
     }
+    
     const handleNextResponse = (savedPokemon: PokemonModel) => {
       this.allPokemons = this.allPokemons.concat([savedPokemon]);
       this.showNotification(new Notification('success', `Pokemon ${savedPokemon.name} added successfully!`))
