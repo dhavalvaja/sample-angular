@@ -1,0 +1,77 @@
+<div class="container text-center">
+
+  <button class="btn btn-primary m-3" (click)="open(content)">
+    Add Pokemon
+  </button>
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add Pokemon</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="d('Cross click')"></button>
+    </div>
+    <form [formGroup]="addPokemonForm">
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="" class="form-label">Pokemon Name</label>
+          <input type="text" class="form-control" formControlName="name">
+          <div class="alert alert-danger p-1" *ngIf="Name.invalid && (Name.dirty || Name.touched)">
+            <div *ngIf="Name.errors?.['required']">
+              Name is required.
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="" class="form-label">Speciality</label>
+          <input type="text" class="form-control" formControlName="speciality">
+          <div class="alert alert-danger p-1" *ngIf="Speciality.invalid && (Speciality.dirty || Speciality.touched)">
+            <div *ngIf="Speciality.errors?.['required']">
+              Speciality is required.
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label for="" class="form-label">Image URL</label>
+          <input type="text" class="form-control" formControlName="imgUrl">
+          <div class="alert alert-danger p-1" *ngIf="Image.invalid && (Image.dirty || Image.touched)">
+            <div *ngIf="Image.errors?.['required']">
+              Image is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-dark" [disabled]="addPokemonForm.invalid"
+          (click)="savePokemon()">Save</button>
+      </div>
+    </form>
+  </ng-template>
+
+
+  <div *ngIf="isNotificationOn && notification !== null" [ngClass]="{
+      'alert alert-dismissible fade show': true,
+      'alert-danger': notification.getType() === 'error',
+      'alert-success': notification.getType() === 'success'
+    }" role="alert">
+    <strong>{{ notification.getType() }}!</strong>
+    {{ notification.getMessage() }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+      (click)="hideNotification()"></button>
+  </div>
+
+  <div *ngIf="allPokemons.length === 0 else pokemonTable">No Pokemon</div>
+
+  <ng-template #pokemonTable>
+
+    <div class="d-flex flex-row flex-wrap">
+      <div *ngFor="let pokemon of pokemonToDisplay; index as i">
+        <app-pokemon-details [pokemon]='pokemonToDisplay[i]'></app-pokemon-details>
+
+      </div>
+    </div>
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize"
+        (pageChange)="refreshPokemons()">
+      </ngb-pagination>
+    </div>
+
+  </ng-template>
+</div>

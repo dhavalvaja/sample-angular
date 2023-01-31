@@ -1,5 +1,20 @@
-<div class="card m-3 ">
+<style>
+    .glass-card {
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+</style>
+
+<div class="glass-card card m-4 p-3">
     <img src={{pokemon.imgUrl}} alt="">
-    <p class="display-5 m-auto">{{pokemon.name}}</p>
-    <p class="bg-info rounded p-1 m-auto">{{pokemon.speciality}}</p>
+    <p class="display-6">{{pokemon.name | titlecase}}</p>
+    <p>
+        Speciality: <span class="badge bg-secondary">{{pokemon.speciality}}</span>
+    </p>
+    <button class="btn btn-primary m-auto" routerLink="/pokemon-list/{{pokemon.id}}">View Details</button>
+
 </div>
