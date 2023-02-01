@@ -1,5 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
-import { PokemonModel } from '../model/pokemon.model';
+import { PokemonModel } from '../../model/pokemon.model';
 import { PokemonService } from './pokemon.service';
 
 @Injectable({

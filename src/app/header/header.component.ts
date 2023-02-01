@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { PokemonModel } from '../model/pokemon.model';
+import { Location } from '@angular/common';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,4 +9,11 @@ import { PokemonModel } from '../model/pokemon.model';
 })
 export class HeaderComponent {
   title: string = 'PokeAPI';
+
+  constructor(private loaction: Location, private route: ActivatedRoute) { }
+
+  searchPokemon(e: SubmitEvent) {
+    e.preventDefault()
+  }
+
 }

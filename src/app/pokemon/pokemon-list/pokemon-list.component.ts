@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Notification } from '../model/notification.model';
-import { PokemonModel } from '../model/pokemon.model';
-import { PokemonService } from '../services/pokemon.service';
+import { PokemonService } from 'src/app/pokemon/services/pokemon.service';
+import { Notification } from '../../model/notification.model';
+import { PokemonModel } from '../../model/pokemon.model';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -13,17 +14,20 @@ import { PokemonService } from '../services/pokemon.service';
 })
 
 export class PokemonListComponent implements OnInit {
-  searchText = '';
   addPokemonForm: FormGroup;
   allPokemons: PokemonModel[];
   pokemonToDisplay: PokemonModel[];
   isNotificationOn: boolean = false;
   notification: Notification | null
+  searchText = '';
+
   page = 1;
   pageSize = 4;
   collectionSize = 0;
 
-  constructor(private fb: FormBuilder, private pokemonService: PokemonService, config: NgbModalConfig, private modalService: NgbModal) {
+  constructor(private fb: FormBuilder, private pokemonService: PokemonService,
+    config: NgbModalConfig, private modalService: NgbModal,
+    private route: ActivatedRoute) {
     this.addPokemonForm = fb.group({})
     this.allPokemons = [];
     this.pokemonToDisplay = [];
@@ -32,9 +36,6 @@ export class PokemonListComponent implements OnInit {
     config.keyboard = false
   }
 
-  open(content: any) {
-    this.modalService.open(content);
-  }
 
   ngOnInit(): void {
     this.addPokemonForm = this.fb.group({
@@ -58,6 +59,10 @@ export class PokemonListComponent implements OnInit {
     });
   }
 
+  openModel(content: any) {
+    this.modalService.open(content);
+  }
+
   refreshPokemons() {
     this.pokemonToDisplay = this.allPokemons
       .map((pokemon, i) => ({ id: i + 1, ...pokemon }))
@@ -66,11 +71,14 @@ export class PokemonListComponent implements OnInit {
   }
 
 
-  filterPokemon(event: any) {
+  public filterPokemon(event: any) {
     this.searchText = event.target.value.toLowerCase()
     this.pokemonToDisplay = this.allPokemons.filter(pokemon => {
       return this.filterByPokemonDetails(pokemon)
     })
+    if (event.target.value === '') {
+      this.refreshPokemons()
+    }
   }
 
   private filterByPokemonDetails(pokemon: PokemonModel): unknown {
@@ -112,7 +120,7 @@ export class PokemonListComponent implements OnInit {
       speciality: this.Speciality.value,
       imgUrl: this.Image.value,
     }
-    
+
     const handleNextResponse = (savedPokemon: PokemonModel) => {
       this.allPokemons = this.allPokemons.concat([savedPokemon]);
       this.showNotification(new Notification('success', `Pokemon ${savedPokemon.name} added successfully!`))

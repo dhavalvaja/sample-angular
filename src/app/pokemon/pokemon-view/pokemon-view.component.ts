@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PokemonModel } from '../model/pokemon.model';
+import { PokemonModel } from '../../model/pokemon.model';
 import { PokemonService } from '../services/pokemon.service';
 
 @Component({

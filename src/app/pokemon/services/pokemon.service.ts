@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PokemonModel } from '../model/pokemon.model';
+import { environment } from 'src/environments/environment';
+import { PokemonModel } from '../../model/pokemon.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 
 export class PokemonService {
-  baseUrl = 'http://localhost:3000/pokemon'
+  baseUrl = environment.baseUrl
 
   public pokemons: PokemonModel[] = [];
 
