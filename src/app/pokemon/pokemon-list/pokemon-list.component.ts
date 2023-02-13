@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { PowerModel } from 'src/app/model/power.model';
 import { PokemonService } from 'src/app/pokemon/services/pokemon.service';
 import { Notification } from '../../model/notification.model';
 import { PokemonModel } from '../../model/pokemon.model';
@@ -16,10 +17,12 @@ import { PokemonModel } from '../../model/pokemon.model';
 export class PokemonListComponent implements OnInit {
   addPokemonForm: FormGroup;
   allPokemons: PokemonModel[];
+  allPowers: PowerModel[];
   pokemonToDisplay: PokemonModel[];
   isNotificationOn: boolean = false;
   notification: Notification | null
   searchText = '';
+  selectedPower: string;
 
   page = 1;
   pageSize = 4;
@@ -30,7 +33,9 @@ export class PokemonListComponent implements OnInit {
     private route: ActivatedRoute) {
     this.addPokemonForm = fb.group({})
     this.allPokemons = [];
+    this.allPowers = [];
     this.pokemonToDisplay = [];
+    this.selectedPower = '';
     this.notification = null
     config.backdrop = 'static';
     config.keyboard = false
@@ -39,9 +44,9 @@ export class PokemonListComponent implements OnInit {
 
   ngOnInit(): void {
     this.addPokemonForm = this.fb.group({
-      name: new FormControl('', [Validators.required]),
-      speciality: this.fb.control('', [Validators.required]),
-      imgUrl: this.fb.control('', [Validators.required]),
+      name: this.fb.control('', [Validators.required]),
+      power: this.fb.control('', [Validators.required]),
+      imageId: this.fb.control('', [Validators.required]),
     })
 
     const handleFetchAllPokemons = (fetchedPokemons: PokemonModel[]) => {
@@ -51,12 +56,24 @@ export class PokemonListComponent implements OnInit {
       this.refreshPokemons()
     }
 
+    const handleFetchAllPower = (fetchedPowers: PowerModel[]) => {
+      this.allPowers = fetchedPowers;
+
+    }
+
     this.pokemonService.getPokemons().subscribe({
       next: handleFetchAllPokemons.bind(this),
       error: (error) => {
         this.showNotification(new Notification('error', error.message))
       }
     });
+
+    this.pokemonService.getPowers().subscribe({
+      next: handleFetchAllPower.bind(this),
+      error: (error) => {
+        this.showNotification(new Notification('error', error.message))
+      }
+    })
   }
 
   openModel(content: any) {
@@ -70,6 +87,11 @@ export class PokemonListComponent implements OnInit {
         (this.page - 1) * this.pageSize + this.pageSize);
   }
 
+  changePower(e: any) {
+    this.Power.setValue(e.target.value, {
+      onlySelf: true
+    });
+  }
 
   public filterPokemon(event: any) {
     this.searchText = event.target.value.toLowerCase()
@@ -83,7 +105,7 @@ export class PokemonListComponent implements OnInit {
 
   private filterByPokemonDetails(pokemon: PokemonModel): unknown {
     return pokemon.name.toLowerCase().includes(this.searchText)
-      || pokemon.speciality.toLowerCase().includes(this.searchText)
+      || pokemon.power.name.toLowerCase().includes(this.searchText)
       || pokemon.id?.toString() === this.searchText;
   }
 
@@ -91,10 +113,10 @@ export class PokemonListComponent implements OnInit {
     return this.addPokemonForm.get('name') as FormControl
   }
   public get Image(): FormControl {
-    return this.addPokemonForm.get('imgUrl') as FormControl
+    return this.addPokemonForm.get('imageId') as FormControl
   }
-  public get Speciality(): FormControl {
-    return this.addPokemonForm.get('speciality') as FormControl
+  public get Power(): FormControl {
+    return this.addPokemonForm.get('power') as FormControl
   }
 
   clearForm() {
@@ -117,8 +139,8 @@ export class PokemonListComponent implements OnInit {
   savePokemon() {
     let pokemon: PokemonModel = {
       name: this.Name.value,
-      speciality: this.Speciality.value,
-      imgUrl: this.Image.value,
+      power: this.Power.value,
+      imageId: this.Image.value,
     }
 
     const handleNextResponse = (savedPokemon: PokemonModel) => {

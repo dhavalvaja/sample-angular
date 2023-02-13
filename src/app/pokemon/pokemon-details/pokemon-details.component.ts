@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { PowerModel } from 'src/app/model/power.model';
 import { PokemonModel } from '../../model/pokemon.model';
 
 @Component({
@@ -12,8 +13,8 @@ export class PokemonDetailsComponent {
   constructor() {
     this.pokemon = {
       name: '',
-      imgUrl: '',
-      speciality: ''
+      imageId: 0,
+      power: new PowerModel()
     }
     this.searchText = ''
   }

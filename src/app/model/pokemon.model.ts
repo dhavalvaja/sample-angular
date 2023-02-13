@@ -1,6 +1,9 @@
+import { PowerModel } from "./power.model";
+
 export class PokemonModel {
     id?: number = 0;
     name: string = '';
-    speciality: string = '';
-    imgUrl: string = '';
+    power: PowerModel = new PowerModel();
+    imageId?: number = 0;
+    imageUrl?: string = '';
 }

@@ -17,10 +17,10 @@
     <ng-template #Pokemon>
 
         <div class="glass-card card m-4 p-3">
-            <img src={{pokemon.imgUrl}} alt="">
+            <img src={{pokemon.imageUrl}} alt="">
             <p class="display-6">{{pokemon.name | titlecase}}</p>
             <p>
-                Speciality: <span class="badge bg-secondary">{{pokemon.speciality}}</span>
+                Speciality: <span class="badge bg-secondary">{{pokemon.power.name}}</span>
             </p>
             <button class="btn btn-primary m-auto" (click)="goBack()">Go Back</button>
 

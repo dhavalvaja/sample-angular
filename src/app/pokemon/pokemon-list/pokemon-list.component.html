@@ -20,17 +20,20 @@
           </div>
         </div>
         <div class="mb-3">
-          <label for="" class="form-label">Speciality</label>
-          <input type="text" class="form-control" formControlName="speciality">
-          <div class="alert alert-danger p-1" *ngIf="Speciality.invalid && (Speciality.dirty || Speciality.touched)">
-            <div *ngIf="Speciality.errors?.['required']">
-              Speciality is required.
+          <label for="" class="form-label">Power</label>
+          <select class="form-control" (change)="changePower($event)" formControlName="power">
+            <option value="">select power</option>
+            <option *ngFor="let power of allPowers" [value]="power.name">{{power.name}}</option>
+          </select>
+          <div class=" alert alert-danger p-1" *ngIf="Power.invalid && (Power.dirty || Power.touched)">
+            <div *ngIf="Power.errors?.['required']">
+              Power is required.
             </div>
           </div>
         </div>
         <div class="mb-3">
           <label for="" class="form-label">Image URL</label>
-          <input type="text" class="form-control" formControlName="imgUrl">
+          <input type="text" class="form-control" formControlName="imageId">
           <div class="alert alert-danger p-1" *ngIf="Image.invalid && (Image.dirty || Image.touched)">
             <div *ngIf="Image.errors?.['required']">
               Image is required.
