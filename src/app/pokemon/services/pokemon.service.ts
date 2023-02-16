@@ -7,6 +7,7 @@ import { PokemonModel } from '../../model/pokemon.model';
 @Injectable()
 
 export class PokemonService {
+  //
   baseUrl = environment.baseUrl
   pokemonUrl = this.baseUrl + "pokemon"
   powerUrl = this.baseUrl + "power"
